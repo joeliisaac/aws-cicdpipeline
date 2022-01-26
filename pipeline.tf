@@ -1,7 +1,130 @@
-resource "aws_codebuild_project" "terraform-plan" {
-  name          = "terraform-cicd-plan"
-  description   = "Plan stage for TF"
-  service_role  = aws_iam_role.codebuild-role.arn
+# resource "aws_codebuild_project" "terraform-plan" {
+#   name         = "terraform-cicd-plan"
+#   description  = "Plan stage for TF"
+#   service_role = aws_iam_role.codebuild-role.arn
+
+#   artifacts {
+#     type = "CODEPIPELINE"
+#   }
+
+#   environment {
+#     compute_type                = "BUILD_GENERAL1_SMALL"
+#     image                       = "hashicorp/terraform:latest"
+#     type                        = "LINUX_CONTAINER"
+#     image_pull_credentials_type = "SERVICE_ROLE"
+#     registry_credential {
+#       credential          = var.dockerhub_credentials
+#       credential_provider = "SECRETS_MANAGER"
+#     }
+#   }
+#   source {
+#     type      = "CODEPIPELINE"
+#     buildspec = file("buildspec/plan-buildspec.yml")
+
+#   }
+# }
+
+
+# resource "aws_codebuild_project" "terraform-apply" {
+#   name         = "terraform-cicd-apply"
+#   description  = "apply stage for TF"
+#   service_role = aws_iam_role.codebuild-role.arn
+
+#   artifacts {
+#     type = "CODEPIPELINE"
+#   }
+
+#   environment {
+#     compute_type                = "BUILD_GENERAL1_SMALL"
+#     image                       = "hashicorp/terraform:latest"
+#     type                        = "LINUX_CONTAINER"
+#     image_pull_credentials_type = "SERVICE_ROLE"
+#     registry_credential {
+#       credential          = var.dockerhub_credentials
+#       credential_provider = "SECRETS_MANAGER"
+#     }
+#   }
+#   source {
+#     type      = "CODEPIPELINE"
+#     buildspec = file("buildspec/apply-buildspec.yml")
+
+#   }
+# }
+
+
+
+# resource "aws_codepipeline" "my-pipeline" {
+#   name     = "tf-cicd-pipeline"
+#   role_arn = aws_iam_role.codepipeline-role.arn
+
+#   artifact_store {
+#     location = aws_s3_bucket.codepipeline-artifacts.bucket
+#     type     = "S3"
+
+#   }
+
+#   stage {
+#     name = "Source"
+
+#     action {
+#       name             = "Source"
+#       category         = "Source"
+#       owner            = "AWS"
+#       provider         = "CodeStarSourceConnection"
+#       version          = "1"
+#       output_artifacts = ["source_output"]
+
+#       configuration = {
+#         ConnectionArn    = var.codestar_connector_credentials
+#         FullRepositoryId = "joeliisaac/aws-cicdpipeline"
+#         BranchName       = "master"
+#         //OutputArtifactFormat  = " CODE_ZIP"
+#       }
+#     }
+#   }
+
+#   stage {
+#     name = "Plan"
+
+#     action {
+#       name            = "Build"
+#       category        = "Build"
+#       provider        = "CodeBuild"
+#       owner           = "AWS"
+#       input_artifacts = ["source_output"]
+#       version         = "1"
+
+#       configuration = {
+#         ProjectName = "terraform-cicd-plan"
+#       }
+#     }
+#   }
+
+#   stage {
+#     name = "Deploy"
+
+#     action {
+#       name            = "Deploy"
+#       category        = "Build"
+#       provider        = "CodeBuild"
+#       owner           = "AWS"
+#       input_artifacts = ["source_output"]
+#       version         = "1"
+
+#       configuration = {
+#         ProjectName = "terraform-cicd-apply"
+#       }
+#     }
+#   }
+# }
+
+
+#----------------------------------------------------
+
+resource "aws_codebuild_project" "tf-plan" {
+  name          = "tf-cicd-plan2"
+  description   = "Plan stage for terraform"
+  service_role  = aws_iam_role.tf-codebuild-role.arn
 
   artifacts {
     type = "CODEPIPELINE"
@@ -9,111 +132,103 @@ resource "aws_codebuild_project" "terraform-plan" {
 
   environment {
     compute_type                = "BUILD_GENERAL1_SMALL"
-    image                       = "hashicorp/terraform:latest"
+    image                       = "hashicorp/terraform:0.14.3"
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "SERVICE_ROLE"
-    registry_credential {
-      credential = var.dockerhub_credentials
-      credential_provider = "SECRETS_MANAGER"
+    registry_credential{
+        credential = var.dockerhub_credentials
+        credential_provider = "SECRETS_MANAGER"
     }
-  }
-    source {
-      type = "CODEPIPELINE"
-      buildspec = file("buildspec/plan-buildspec.yml")
+ }
+ source {
+     type   = "CODEPIPELINE"
+     buildspec = file("buildspec/plan-buildspec.yml")
+ }
+}
 
+resource "aws_codebuild_project" "tf-apply" {
+  name          = "tf-cicd-apply"
+  description   = "Apply stage for terraform"
+  service_role  = aws_iam_role.tf-codebuild-role.arn
+
+  artifacts {
+    type = "CODEPIPELINE"
+  }
+
+  environment {
+    compute_type                = "BUILD_GENERAL1_SMALL"
+    image                       = "hashicorp/terraform:0.14.3"
+    type                        = "LINUX_CONTAINER"
+    image_pull_credentials_type = "SERVICE_ROLE"
+    registry_credential{
+        credential = var.dockerhub_credentials
+        credential_provider = "SECRETS_MANAGER"
     }
+ }
+ source {
+     type   = "CODEPIPELINE"
+     buildspec = file("buildspec/apply-buildspec.yml")
+ }
 }
 
 
-resource "aws_codebuild_project" "terraform-apply" {
-  name          = "terraform-cicd-apply"
-  description   = "apply stage for TF"
-  service_role  = aws_iam_role.codebuild-role.arn
+resource "aws_codepipeline" "cicd_pipeline" {
 
-  artifacts {
-    type = "CODEPIPELINE"
-  }
+    name = "tf-cicd"
+    role_arn = aws_iam_role.tf-codepipeline-role.arn
 
-  environment {
-    compute_type                = "BUILD_GENERAL1_SMALL"
-    image                       = "hashicorp/terraform:latest"
-    type                        = "LINUX_CONTAINER"
-    image_pull_credentials_type = "SERVICE_ROLE"
-    registry_credential {
-      credential = var.dockerhub_credentials
-      credential_provider = "SECRETS_MANAGER"
+    artifact_store {
+        type="S3"
+        location = aws_s3_bucket.codepipeline_artifacts.id
     }
-  }
-  source {
-      type = "CODEPIPELINE"
-      buildspec = file("buildspec/apply-buildspec.yml")
-
-    }
-  }
-
-
-
-resource "aws_codepipeline" "my-pipeline" {
-  name     = "tf-cicd-pipeline"
-  role_arn = aws_iam_role.codepipeline-role.arn
-
-  artifact_store {
-    location = aws_s3_bucket.codepipeline-artifacts.id
-    type     = "S3"
-
-  }
-
-  stage {
-    name = "Source"
-
-    action {
-      name             = "Source"
-      category         = "Source"
-      owner            = "AWS"
-      provider         = "CodeStarSourceConnection"
-      version          = "1"
-      output_artifacts = ["tf-code"]
-
-      configuration = {
-        ConnectionArn    = var.codestar_connector_credentials
-        FullRepositoryId = "joeliisaac/aws-cicdpipeline"
-        BranchName       = "main"
-        OutputArtifactFormat  = " CODE_ZIP"
-      }
-    }
-  }
-
-  stage {
-    name = "Plan"
-
-    action {
-      name             = "Build"
-      category         = "Build"
-      provider         = "CodeBuild"
-      owner            = "AWS"
-      input_artifacts  = ["tf-code"]
-      version          = "1"
-
-      configuration = {
-        ProjectName = "terraform-plan"
-      }
-    }
-  }
 
     stage {
-    name = "Deploy"
-
-    action {
-      name             = "Deploy"
-      category         = "Build"
-      provider         = "CodeBuild"
-       owner            = "AWS"
-      input_artifacts  = ["tf-code"]
-      version          = "1"
-
-      configuration = {
-        ProjectName = "terraform-plan"
-      }
+        name = "Source"
+        action{
+            name = "Source"
+            category = "Source"
+            owner = "AWS"
+            provider = "CodeStarSourceConnection"
+            version = "1"
+            output_artifacts = ["tf-code"]
+            configuration = {
+                FullRepositoryId = "davoclock/aws-cicd-pipeline"
+                BranchName   = "master"
+                ConnectionArn = var.codestar_connector_credentials
+                OutputArtifactFormat = "CODE_ZIP"
+            }
+        }
     }
-  }
+
+    stage {
+        name ="Plan"
+        action{
+            name = "Build"
+            category = "Build"
+            provider = "CodeBuild"
+            version = "1"
+            owner = "AWS"
+            input_artifacts = ["tf-code"]
+            configuration = {
+                ProjectName = "tf-cicd-plan"
+            }
+        }
+    }
+
+    stage {
+        name ="Deploy"
+        action{
+            name = "Deploy"
+            category = "Build"
+            provider = "CodeBuild"
+            version = "1"
+            owner = "AWS"
+            input_artifacts = ["tf-code"]
+            configuration = {
+                ProjectName = "tf-cicd-apply"
+            }
+        }
+    }
+    
+    
 }

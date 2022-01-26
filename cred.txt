@@ -1,6 +1,0 @@
-
-AWS secrets/ dockerhub ARN: arn:aws:secretsmanager:us-east-1:460475058893:secret:codebuild/dockerhub-kvSHqZ
-
-connector ID : 22626286
-
-Connector ARN: arn:aws:codestar-connections:us-east-1:460475058893:connection/6214a430-eb42-4b1c-8c94-cebe2f341d2f

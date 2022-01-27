@@ -107,7 +107,7 @@ resource "aws_codepipeline" "my-pipeline" {
 
     action {
       name            = "Deploy"
-      category        = "Deploy" //changed
+      category        = "Build" 
       provider        = "CodeBuild"
       owner           = "AWS"
       input_artifacts = ["source_output"]

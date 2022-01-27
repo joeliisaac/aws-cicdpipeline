@@ -35,7 +35,7 @@ override.tf.json
 terraform.rc
 
 .terraform.lock.hcl
-outputs.tf
+
 
 
 .terraform*

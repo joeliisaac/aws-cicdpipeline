@@ -14,10 +14,10 @@ resource "aws_codebuild_project" "terraform-plan" {
     image                       = "hashicorp/terraform:1.1.4"
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "SERVICE_ROLE"
-    # registry_credential {
-    #   credential          = var.dockerhub_credentials
-    #   credential_provider = "SECRETS_MANAGER"
-    # }
+    registry_credential {
+      credential          = var.dockerhub_credentials
+      credential_provider = "SECRETS_MANAGER"
+    }
   }
   source {
     type      = "CODEPIPELINE"

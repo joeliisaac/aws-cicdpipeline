@@ -161,7 +161,7 @@ resource "aws_codebuild_project" "tf-apply" {
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "SERVICE_ROLE"
     registry_credential{
-        credential = "arn:aws:secretsmanager:us-east-1:460475058893:secret:codebuild/dockerhub-kvSHqZ" //var.dockerhub_credentials
+        credential = var.dockerhub_credentials
         credential_provider = "SECRETS_MANAGER"
     }
  }

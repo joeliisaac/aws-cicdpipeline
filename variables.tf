@@ -1,13 +1,13 @@
-variable "dockerhub_credentials" {
+variable dockerhub_credentials {
   type = string
 }
 
-variable "codestar_connector_credentials" {
+variable codestar_connector_credentials {
   type = string
 }
 
 
-variable "region" {
+variable region {
   type    = string
   default = "us-east-1"
 

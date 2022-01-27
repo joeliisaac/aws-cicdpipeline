@@ -11,7 +11,7 @@ resource "aws_codebuild_project" "terraform-plan" {
 
   environment {
     compute_type                = "BUILD_GENERAL1_SMALL"
-    image                       = "hashicorp/terraform:latest"
+    image                       = "hashicorp/terraform:1.1.4"
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "SERVICE_ROLE"
     registry_credential {
@@ -38,7 +38,7 @@ resource "aws_codebuild_project" "terraform-apply" {
 
   environment {
     compute_type                = "BUILD_GENERAL1_SMALL"
-    image                       = "hashicorp/terraform:latest"
+    image                       = "hashicorp/terraform:1.1.4"
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "SERVICE_ROLE"
     registry_credential {
@@ -52,8 +52,6 @@ resource "aws_codebuild_project" "terraform-apply" {
 
   }
 }
-
-
 
 resource "aws_codepipeline" "my-pipeline" {
   name     = "tf-cicd-pipeline"

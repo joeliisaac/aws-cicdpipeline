@@ -139,17 +139,6 @@ resource "aws_codebuild_project" "tf-cicd-plan" {
         credential = var.dockerhub_credentials
         credential_provider = "SECRETS_MANAGER"
 
-        environment_variable {
-          name  = "username"
-          value = var.username
-          type = "SECRETS_MANAGER"
-        }
-
-        environment_variable {
-          name  = "password"
-          value = var.password
-          type = "SECRETS_MANAGER"
-        }
     }
  }
  source {

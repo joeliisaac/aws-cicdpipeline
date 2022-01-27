@@ -1,3 +1,5 @@
+
+
 resource "aws_codebuild_project" "terraform-plan" {
   name         = "terraform-cicd-plan"
   description  = "Plan stage for TF"
@@ -84,7 +86,7 @@ resource "aws_codepipeline" "my-pipeline" {
   }
 
   stage {
-    name = "Plan"
+    name = "Build" //changed from Plan
 
     action {
       name            = "Build"
@@ -105,7 +107,7 @@ resource "aws_codepipeline" "my-pipeline" {
 
     action {
       name            = "Deploy"
-      category        = "Build"
+      category        = "Deploy" //changed
       provider        = "CodeBuild"
       owner           = "AWS"
       input_artifacts = ["source_output"]

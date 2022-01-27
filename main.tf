@@ -8,17 +8,16 @@ provider "aws" {
 resource "aws_iam_role" "codepipeline-role" {
    name = "codepipeline-role"
 
-   assume_role_policy = <<EOF
+assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Action": "sts:AssumeRole",
+      "Effect": "Allow",
       "Principal": {
         "Service": "codepipeline.amazonaws.com"
       },
-      "Effect": "Allow",
-      "Sid": ""
+      "Action": "sts:AssumeRole"
     }
   ]
 }
@@ -32,7 +31,7 @@ EOF
   statement {
      sid = ""
      actions = [
-       "codestar-connections:UseConnection"
+       "codestar-connections:UseConnection", "s3:*", "codebuild:*"
      ]
      resources = [
        "*"
@@ -79,17 +78,17 @@ EOF
  resource "aws_iam_role" "codebuild-role" {
    name = "codebuild-role"
 
-    assume_role_policy = <<EOF
+
+  assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Action": "sts:AssumeRole",
+      "Effect": "Allow",
       "Principal": {
         "Service": "codebuild.amazonaws.com"
       },
-      "Effect": "Allow",
-      "Sid": ""
+      "Action": "sts:AssumeRole"
     }
   ]
 }
@@ -123,6 +122,10 @@ EOF
    path        = "/"
    description = "My build policy"
    policy      = data.aws_iam_policy_document.build-policies.json
+
+
+
+   
  }
 
  // policy attachment

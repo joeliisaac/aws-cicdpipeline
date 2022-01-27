@@ -5,25 +5,24 @@ provider "aws" {
 
 //IAM role for codepipeline
 
-
 resource "aws_iam_role" "codepipeline-role" {
    name = "codepipeline-role"
 
-
    assume_role_policy = <<EOF
- {
-   "Version": "2012-10-17",
-   "Statement": [
-     {
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "codepipeline.amazonaws.com"
+      },
       "Effect": "Allow",
-       "Principal": {
-         "Service": "codepipeline.amazonaws.com"
-       },
-       "Action": "sts:AssumeRole"
-     }
-   ]
- }
- EOF
+      "Sid": ""
+    }
+  ]
+}
+EOF
  }
 
 
@@ -80,20 +79,21 @@ resource "aws_iam_role" "codepipeline-role" {
  resource "aws_iam_role" "codebuild-role" {
    name = "codebuild-role"
 
-   assume_role_policy = <<EOF
- {
-   "Version": "2012-10-17",
-   "Statement": [
-     {
-       "Effect": "Allow",
-       "Principal": {
-         "Service": "codebuild.amazonaws.com"
-       },
-       "Action": "sts:AssumeRole"
-     }
-   ]
- }
- EOF
+    assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "codebuild.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
  }
 
  //codebuild policy document

@@ -138,6 +138,18 @@ resource "aws_codebuild_project" "tf-cicd-plan" {
     registry_credential{
         credential = var.dockerhub_credentials
         credential_provider = "SECRETS_MANAGER"
+
+        environment_variable {
+          name  = "username"
+          value = var.username
+          type = "SECRETS_MANAGER"
+        }
+
+        environment_variable {
+          name  = "password"
+          value = var.password
+          type = "SECRETS_MANAGER"
+        }
     }
  }
  source {
@@ -159,7 +171,7 @@ resource "aws_codebuild_project" "tf-apply" {
     compute_type                = "BUILD_GENERAL1_SMALL"
     image                       = "hashicorp/terraform:latest"
     type                        = "LINUX_CONTAINER"
-    image_pull_credentials_type = "CODEBUILD"
+    image_pull_credentials_type = "SERVICE_ROLE"
     registry_credential{
         credential = var.dockerhub_credentials
         credential_provider = "SECRETS_MANAGER"

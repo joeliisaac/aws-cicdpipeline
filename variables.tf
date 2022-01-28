@@ -1,10 +1,10 @@
 variable "dockerhub_credentials" { 
   type = string
-  default     = "${var.dockerhub_credentials}"
+  dockerhub_credentials     = "${var.dockerhub_credentials}"
 }
 variable "codestar_connector_credentials" {
   type = string
-  default     = "${var.codestar_connector_credentials}"
+  codestar_connector_credentials     = "${var.codestar_connector_credentials}"
 }
 
 variable region {

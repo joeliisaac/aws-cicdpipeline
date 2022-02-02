@@ -1,10 +1,10 @@
 variable "dockerhub_credentials" { 
   type = string
-  dockerhub_credentials     = "${var.dockerhub_credentials}"
+ // default = "arn:aws:secretsmanager:us-east-1:460475058893:secret:docker-token-07oSpz" 
 }
 variable "codestar_connector_credentials" {
   type = string
-  codestar_connector_credentials     = "${var.codestar_connector_credentials}"
+  //default = "arn:aws:codestar-connections:us-east-1:460475058893:connection/6214a430-eb42-4b1c-8c94-cebe2f341d2f"
 }
 
 variable region {
@@ -12,4 +12,3 @@ variable region {
   default = "us-east-1"
   
 }
-

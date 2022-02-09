@@ -1,15 +1,6 @@
 version: 0.2
 phases:
 
-  install:
-    runtime_versions:
-      python: latest
-    commands:
-      - cd /usr/bin
-      
-      - python -V
-      - pip3 install checkov
-
   pre_build:
     commands:
       - terraform init

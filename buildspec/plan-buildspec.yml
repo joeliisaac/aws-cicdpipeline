@@ -1,11 +1,15 @@
 version: 0.2
 phases:
+  install:
+    commands:
+      - pip install boto3
+      - pip install checkov
   pre_build:
     commands:
       - terraform init
       - terraform validate
       - pip install boto3
-      -  pip install checkov
+      - pip install checkov
   
   build:
     commands:

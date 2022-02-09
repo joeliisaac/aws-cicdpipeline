@@ -4,6 +4,8 @@ phases:
     commands:
       - terraform init
       - terraform validate
+      - pip install boto3
+      -  pip install checkov
   
   build:
     commands:

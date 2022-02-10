@@ -2,15 +2,16 @@ version: 0.2
 phases:
   install:
     commands:
+    - sudo apt-get install python3.7
     - pip3 install awscli --upgrade --user
     - pip3 install checkov
   pre_build:
     commands:
       - terraform init
       - terraform validate
-      - pip install boto3
-      - pip install checkov
+ 
   
   build:
     commands:
       - terraform plan
+      - checkov --directory ./

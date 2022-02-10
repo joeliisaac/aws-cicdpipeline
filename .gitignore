@@ -39,5 +39,5 @@ terraform.rc
 
 
 .terraform*
-.json
-.yml
+keys.json
+keys.yml

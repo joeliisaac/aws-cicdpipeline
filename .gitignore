@@ -39,5 +39,5 @@ terraform.rc
 
 
 .terraform*
-keys.json
-keys.yml
+default.json
+exclusions.yml

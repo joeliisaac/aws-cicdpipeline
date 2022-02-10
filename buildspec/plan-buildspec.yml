@@ -2,8 +2,8 @@ version: 0.2
 phases:
   install:
     commands:
-
-      - pip install checkov
+    - pip3 install awscli --upgrade --user
+    - pip3 install checkov
   pre_build:
     commands:
       - terraform init
